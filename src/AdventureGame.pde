@@ -5,8 +5,8 @@ Hero hero;
 boolean[] keys;
 
 //Blocks
-String currentBlock;
-String moveBlock;
+int blockX;
+int blockY;
 //Block Initialization
 Blocks test;
 Blocks up;
@@ -16,7 +16,8 @@ Blocks right;
 
 void setup() {
   //Blocks
-  currentBlock = "test";
+  blockX = 0;
+  blockY = 0;
   
   //Upkeep
   fullScreen();
@@ -43,7 +44,6 @@ void setup() {
 void draw() {
   //All the stuff for block logic
   detectBlock();
-  changeBlock();
   drawBlock();
   
   //Stuff about the player
@@ -57,84 +57,38 @@ void draw() {
 //BLOCKS!
 //Displays the blocks
 void drawBlock() {
- if (currentBlock == "test") {
+ if (blockX == 0 && blockY == 0) {
   test.display(); 
- } else if (currentBlock == "up") {
+ } else if (blockX == 0  && blockY == 1) {
   up.display(); 
- } else if (currentBlock == "down") {
+ } else if (blockX == 0  && blockY == -1) {
   down.display(); 
- } else if (currentBlock == "left") {
+ } else if (blockX == -1  && blockY == 0) {
   left.display(); 
- } else if (currentBlock == "right") {
+ } else if (blockX == 1  && blockY == 0) {
   right.display();  
  }
 }
 
-//Changes the blocks
-void changeBlock() {
-  //For "up"
-  int changeY = height-25;
-  //For "left"
-  int changeX = width-25;
-  
-  //For the "test" block
-  if(currentBlock == "test" && moveBlock == "up") {
-    currentBlock = "up";
-    moveBlock = "";
-    hero.y = changeY;
-  } else if(currentBlock == "test" && moveBlock == "down") {
-    currentBlock = "down";
-    moveBlock = "";
-    hero.y = 25;
-  } else if(currentBlock == "test" && moveBlock == "left") {
-    currentBlock = "left";
-    moveBlock = "";
-    hero.x = changeX;
-  } else if(currentBlock == "test" && moveBlock == "right") {
-    currentBlock = "right";
-    moveBlock = "";
-    hero.x = 0;
-  }
-  
-  //For the "up" block
-  if(currentBlock == "up" && moveBlock == "down") {
-    currentBlock = "test";
-    moveBlock = "";
-    hero.y = 0;
-  }
-  
-  //For the "down" block
-  if(currentBlock == "down" && moveBlock == "up") {
-    currentBlock = "test";
-    moveBlock = "";
-    hero.y = changeY;
-  }
-  
-  //For the "left" block
-  if(currentBlock == "left" && moveBlock == "right") {
-    currentBlock = "test";
-    moveBlock = "";
-    hero.x = 0;
-  }
-  
-  //For the "right" block
-  if(currentBlock == "right" && moveBlock == "left") {
-    currentBlock = "test";
-    moveBlock = "";
-    hero.x = changeX;
-  }
-}
-
 //Detects when the player hits the edge
 void detectBlock() {
+ //For up
+ int changeY = height-25;
+ //For left
+ int changeX = width-25;
+  
  if (hero.x < 0) {
-  moveBlock = "left"; 
+  blockX -= 1;
+  hero.x = changeX;
  } else if (hero.x >= width) {
-  moveBlock = "right"; 
+  blockX += 1;
+  hero.x = 0;
  } else if (hero.y < 0) {
-  moveBlock = "up"; 
+  blockY += 1;
+  hero.y = changeY;
  } else if (hero.y >= height) {
-  moveBlock = "down";
+  blockY -= 1;
+  hero.y = 25;
  }
 }
 
